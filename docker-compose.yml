@@ -1,0 +1,52 @@
+version: "3"
+services:
+  eureka-naming-server:
+    build:
+      context: ./EurekaNamingServer
+      dockerfile: Dockerfile
+	  container_name: naming-server
+    ports:
+      - 8761:8761
+    network:
+      - e-stock-market
+	  
+  manage-company-service:
+    build:
+      context: ./ManageCompanyService
+      dockerfile: Dockerfile
+	  container_name: company-service
+    ports:
+      - 8000:8000
+    depends_on:
+      - eureka-naming-server
+    environment:
+      - EUREKA_URI=http://eureka-naming-server:8761/eureka
+      - MYSQL_HOST=host.docker.internal
+
+  stock-service:
+    build:
+      context: ./StockService
+      dockerfile: Dockerfile
+	  container_name: stock-service
+    ports:
+      - 9000:9000
+    depends_on:
+      - eureka-server
+    environment:
+	  - EUREKA_URI=http://eureka-server:8761/eureka
+      - MONGO_HOST=host.docker.internal
+	  
+  stock-market-api-gateway-service:
+    build:
+      context: ./StockMarketAPIGateway
+      dockerfile: Dockerfile
+	  container_name: zuul-server
+    ports:
+      - 7000:7000
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_URI=http://eureka-server:8761/eureka
+
+networks:
+  e-stock-market:

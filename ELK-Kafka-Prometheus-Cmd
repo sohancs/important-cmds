@@ -1,0 +1,52 @@
+Kafka Commands :
+
+open cmd on path C:\kafka\kafka_2.13-2.6.2\bin\windows
+
+1. zookeeper-server-start.bat C:\kafka\kafka_2.13-2.6.2\config\zookeeper.properties
+
+2. kafka-server-start.bat C:\kafka\kafka_2.13-2.6.2\config\server.properties
+
+3. kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic company-service-topic
+
+3. kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic stock-service-topic
+
+----------------------------------------------
+
+Prometheus Commands : 
+
+open cmd on path C:\prometheus\prometheus-2.24.1.windows-amd64
+
+prometheus.exe --config.file="C:\Usecase Impl\StockService\src\main\resources\prometheus.yml"
+
+Prometheus : localhost:9090
+
+----------------------------------------------
+
+Logstash Commands :
+
+open cmd on path C:\logstash\logstash-7.10.2\bin
+
+logstash -f logstash.conf
+
+----------------------------------------------
+
+Elasticsearch Commands :
+
+open cmd on path C:\Program Files\Elastic\Elasticsearch\7.10.2\bin
+elasticsearch.bat 
+ 
+Elastic Search : http://localhost:9200
+
+----------------------------------------------
+
+Kibana Commands :
+
+E:\kibana-7.13.2-windows-x86_64\config\kibana.yml
+uncomment below line
+# The URLs of the Elasticsearch instances to use for all your queries.
+elasticsearch.hosts: ["http://localhost:9200"]
+
+open cmd on path C:\kibana\kibana-7.10.2-windows-x86_64\bin
+kibana.bat
+
+Kibana : http://localhost:5601/

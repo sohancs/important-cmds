@@ -1,0 +1,12 @@
+Docker Commands :
+
+docker ps -a 
+docker images
+docker build -t <desire image name> .
+docker run -p 8000:8000 <image name>
+docker run -p 8000:8000 --name manage-company-service --link mysql-server-standalone:mysql -d  manage-company-service-image
+docker container prune  : delete stop container
+docker image prune
+docker logs <container name>
+docker run --name mysql-server-standalone -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=manage_company -e MYSQL_PASSWORD=root -d mysql:5.6
+docker run --env EUREKA_URI=http://eureka-server:8761/eureka --env MONGO_HOST=mongodb -p 9000:9000 --network estock-market --name stock-service <imagname>
