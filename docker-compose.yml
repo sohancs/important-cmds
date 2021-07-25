@@ -2,51 +2,88 @@ version: "3"
 services:
   eureka-naming-server:
     build:
-      context: ./EurekaNamingServer
+      context: ../EurekaNamingServer
       dockerfile: Dockerfile
-	  container_name: naming-server
+    container_name: naming-server
     ports:
       - 8761:8761
-    network:
+    networks:
       - e-stock-market
 	  
   manage-company-service:
     build:
-      context: ./ManageCompanyService
+      context: ../ManageCompanyService
       dockerfile: Dockerfile
-	  container_name: company-service
+    container_name: company-service
     ports:
       - 8000:8000
     depends_on:
       - eureka-naming-server
+      - mysqldb
     environment:
-      - EUREKA_URI=http://eureka-naming-server:8761/eureka
-      - MYSQL_HOST=host.docker.internal
-
+      EUREKA_URI: http://eureka-naming-server:8761/eureka
+      MYSQL_HOST: mysqldb
+    networks:
+      - e-stock-market
+	  
   stock-service:
     build:
-      context: ./StockService
+      context: ../StockService
       dockerfile: Dockerfile
-	  container_name: stock-service
+    container_name: stock-service
     ports:
       - 9000:9000
     depends_on:
-      - eureka-server
+      - eureka-naming-server
+      - mongodb
     environment:
-	  - EUREKA_URI=http://eureka-server:8761/eureka
-      - MONGO_HOST=host.docker.internal
+      EUREKA_URI: http://eureka-naming-server:8761/eureka
+      MONGO_HOST: mongodb
+    networks:
+      - e-stock-market
 	  
   stock-market-api-gateway-service:
     build:
-      context: ./StockMarketAPIGateway
+      context: ../StockMarketAPIGateway
       dockerfile: Dockerfile
-	  container_name: zuul-server
+    container_name: zuul-server
     ports:
       - 7000:7000
     depends_on:
       - eureka-server
     environment:
-      - EUREKA_URI=http://eureka-server:8761/eureka
+      EUREKA_URI: http://eureka-server:8761/eureka
+    networks:
+      - e-stock-market
+	  
+  mysqldb:
+    image: mysql/mysql-server
+    container_name: mysql-server-standalone
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: manage_company  
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - mysqldata:var/lib/mysql
+    networks:
+      - e-stock-market
+	  
+  mongodb:
+    image: mongo
+    container_name: mongo-server-standalone
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - e-stock-market
 
 networks:
   e-stock-market:
+
+volumes:
+  mongodata:
+  mysqldata:
