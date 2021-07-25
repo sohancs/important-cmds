@@ -4,9 +4,20 @@ docker ps -a
 docker images
 docker build -t <desire image name> .
 docker run -p 8000:8000 <image name>
-docker run -p 8000:8000 --name manage-company-service --link mysql-server-standalone:mysql -d  manage-company-service-image
+docker run -p 8000:8000 --name company-service --network e-stock-market --env MYSQL_HOST=mysql-server-standalone --env MYSQL_USER=root --env MYSQL_PASSWORD=root --env EUREKA_URI=http://eureka-naming-server:8761/eureka stock-market-company-service:1.0.0
 docker container prune  : delete stop container
 docker image prune
 docker logs <container name>
-docker run --name mysql-server-standalone -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=manage_company -e MYSQL_PASSWORD=root -d mysql:5.6
+docker run --name mysql-server-standalone --network e-stock-market -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=manage_company -e MYSQL_USER=root -e MYSQL_PASSWORD=root -d mysql/mysql-server:latest
 docker run --env EUREKA_URI=http://eureka-server:8761/eureka --env MONGO_HOST=mongodb -p 9000:9000 --network estock-market --name stock-service <imagname>
+docker network create e-stock-market
+docker stop <mysql-server-standalone>
+docker volume create mongodata
+docker exec -it mysql-server-standalone bash  --> login to mysql server inside container
+mysql -u root -p
+docker rm -f <container-name>   : delete container
+docker exec -it mongo-server-standalone bash
+mongo
+
+docker tag stock-market-company-service:1.0.0 zohancs/stock-market-company-service:1.0.0
+docker push zohancs/stock-market-company-service:1.0.0
