@@ -1,0 +1,66 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "mysqldata",
+      "host": {
+        "sourcePath": "/var/app/current/mysql/data/"
+      }
+    }
+  ],
+  "containerDefinitions": [
+    {
+      "name": "eureka-naming-server",
+      "image": "zohancs/stock-market-eureka-server:1.0.0",
+      "environment": [],
+      "essential": false,
+      "memory": 500,
+      "mountPoints": []
+    },
+    {
+      "name": "manage-company-service",
+      "image": "zohancs/stock-market-company-service:1.0.0",
+      "essential": false,
+      "memory": 500,
+      "portMappings": [
+        {
+          "hostPort": 8000,
+          "containerPort": 8000
+        }
+      ],
+      "links": [
+        "eureka-naming-server",
+		"mysqldb"
+      ],
+	  "environment": [
+		{
+		  "name": "EUREKA_URI",
+		  "value": "http://eureka-naming-server:8761/eureka"
+		},
+		{
+		  "name": "MYSQL_HOST",
+		  "value": "mysqldb"
+		}
+	  ],
+      "mountPoints": []
+    },
+	{
+      "name": "mysqldb",
+      "image": "mysql/mysql-server",
+      "essential": false,
+      "memory": 500,
+      "portMappings": [
+        {
+          "hostPort": 3306,
+          "containerPort": 3306
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "mysqldata",
+          "containerPath": "/var/lib/mysql"
+        }
+      ]
+    }
+  ]
+}
