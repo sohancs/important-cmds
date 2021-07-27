@@ -1,0 +1,22 @@
+Company Service :  8000
+1. http:localhost:7000/api/v1.0/market/company/register  POST
+2. http:localhost:7000/api/v1.0/market/company/info/{companyCode}  GET
+3. http:localhost:7000/api/v1.0/market/company/getAll   GET
+4. http:localhost:7000/api/v1.0/market/company/delete/{companyCode}  DELETE
+
+
+Stock Service :  9000
+1. http:localhost:7000/api/v1.0/market/stock/add   POST
+2. http:localhost:7000/api/v1.0/market/stock/get/{companycode}/{startdate}/{enddate}   GET
+3. http:localhost:7000/api/v1.0/market/stock/getLatestStockPrice/{companycode}  GET
+4. http:localhost:7000/api/v1.0/market/stock/getAllLatestStockPrice   GET
+5. http:localhost:7000/api/v1.0/market/stock/delete/{companyCode}  DELETE
+
+
+Eureka Server:
+1. http://localhost:8761/eureka
+
+
+Swagger Url:
+1. http://localhost:8000/swagger-ui/
+2. http://localhost:9000/swagger-ui/
