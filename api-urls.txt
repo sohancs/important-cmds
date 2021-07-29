@@ -20,3 +20,12 @@ Eureka Server:
 Swagger Url:
 1. http://localhost:8000/swagger-ui/
 2. http://localhost:9000/swagger-ui/
+
+AWS URLs:
+
+UI:
+http://stock-market-ui.s3-website.us-east-2.amazonaws.com/dashboard
+
+Swagger:
+Company Service :  http://estockmarket-prod.eba-uf5hjpyd.us-east-2.elasticbeanstalk.com:8000/swagger-ui/
+Stock Service :    http://estockmarket-prod.eba-uf5hjpyd.us-east-2.elasticbeanstalk.com:9000/swagger-ui/
